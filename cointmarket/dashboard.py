@@ -129,7 +129,7 @@ def dashboard_main():
                     price, vol = st.columns([4,4])
                     price.metric("Fair Price", sym_data['price'])
 
-                    vol_name = "Volatility({}s)".format(watch_config.update_interval)
+                    vol_name = "Volatility({}s)".format(watch_config.calc_window)
                     vol.metric(vol_name, sym_data['volatility'])
                     fig = create_candlestick_chart(sym_data['hist'])
                     st.plotly_chart(fig)
