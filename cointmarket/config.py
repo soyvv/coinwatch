@@ -30,9 +30,7 @@ class EnvConfig:
     zerorpc_server_addr = "tcp://0.0.0.0:4243"
 
 class DevConfig(EnvConfig):
-    pg_url="postgres://postgres:pass123@192.168.2.204:5432/coinwatch"
-    mongo_url="mongodb://192.168.2.204:27017"
-    zerorpc_client_addr="tcp://127.0.0.1:4243"
+    pass
 
 
 class DockerEnvConfig(EnvConfig):
