@@ -39,9 +39,8 @@ data = {}
 
 
 
-## todo: fix this
+## todo: fix this (issue when using singleton)
 _rpc_client = None
-# _db_conn = None
 
 #@st.experimental_singleton
 def rpc_client(_rpc_addr) -> zerorpc.Client:
@@ -60,6 +59,7 @@ def db_conn(_pg_url):
 
 
 def get_data(env_config) :
+    # get realtime snapshot
     rpc = rpc_client(env_config.zerorpc_client_addr)
     mkt_snapshot = rpc.query()
     logging.debug(mkt_snapshot)
@@ -69,6 +69,7 @@ def get_data(env_config) :
             data[sym] = {}
         data[sym].update(data_item['data'])
 
+    # get hist data (1min-ohlc)
     tsdb_conn = db_conn(env_config.pg_url)
     ohlc_data = get_ohlc_data(tsdb_conn)
 
@@ -115,21 +116,24 @@ def dashboard_main():
     placeholder = st.empty()
 
     env_config = get_env_config(ENV)
-    watch_config = get_watch_config(env_config.mongo_url)
+    watch_config_client = get_watch_config(env_config.mongo_url)
+    watch_config = watch_config_client.get_config()
+
 
     while True:
         data = get_data(env_config)
         with placeholder.container():
             for sym, sym_data in data.items():
                 with st.container():
-                    st.header(sym)
+                    st.header(sym.upper())
                     price, vol = st.columns([4,4])
                     price.metric("Fair Price", sym_data['price'])
-                    vol.metric("Volatility", sym_data['volatility'])
-                    #chart.line_chart(sym_data['hist'])
+
+                    vol_name = "Volatility({}s)".format(watch_config.update_interval)
+                    vol.metric(vol_name, sym_data['volatility'])
                     fig = create_candlestick_chart(sym_data['hist'])
                     st.plotly_chart(fig)
-            time.sleep(watch_config.get_config().update_interval)
+            time.sleep(watch_config.update_interval)
 
 
 dashboard_main()

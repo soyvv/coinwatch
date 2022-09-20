@@ -51,6 +51,7 @@ class VolatilityCalc(FactorCalc):
 
             first_ts_dt = sym_window_df.iloc[0]['time']
 
+            # only keep the data as long as the window
             if ts_dt - first_ts_dt > datetime.timedelta(seconds=self.window_len_secs):
                 sym_window_df = sym_window_df.iloc[1:]
 

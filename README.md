@@ -19,3 +19,6 @@ To re-build the images:
 ```shell
 docker-compose build
 ```
+
+
+To change config, edit the /db/mongo-init.js.
