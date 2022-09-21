@@ -38,7 +38,7 @@ services:
       COIN_WATCH_ENV: docker
     ports:
       - "4243:4243"
-    command: ["python", "/app/cointmarket/coin_market.py"]
+    command: ["python", "/app/coinmarket/coin_market.py"]
 
   coinwatch-dashboard:
     image: coinwatch
@@ -48,7 +48,7 @@ services:
       COIN_WATCH_ENV: docker
     ports:
       - "8051:8051"
-    command: ["streamlit", "run", "/app/cointmarket/dashboard.py", "--server.port=8051", "--server.address=0.0.0.0"]
+    command: ["streamlit", "run", "/app/coinmarket/dashboard.py", "--server.port=8051", "--server.address=0.0.0.0"]
 
 
 volumes:

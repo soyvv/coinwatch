@@ -2,7 +2,7 @@
 
 
 A simple web app built with:
- * streamlib
+ * streamlit
  * zerorpc
  * mongodb(as config db) and timescaledb(as timeseries db)
 
